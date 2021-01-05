@@ -1,0 +1,104 @@
+﻿@model IEnumerable<fantazijos_lyga.Duomenu_baze.Zaidejas>
+    <h4 style="margin-top:20px; text-align:center;" class="sukurimoText">Administratoriaus panelė</h4>
+    <hr style="width:30%;" class="adminHr" />
+    <br />
+    <h5 style="margin-top:-20px; margin-bottom:40px; text-align:center;" class="sukurimoText">Žaidėjai</h5>
+    <table class="playerTable" id="table" data-toggle="table" style="table-layout:fixed;" data-search="true">
+        <thead>
+            <tr style="text-align:center;">
+                <th>
+                    Vardas
+                </th>
+                <th>
+                    Foto
+                </th>
+                <th>
+                    Pozicija
+                </th>
+                <th>
+                    Taškai
+                </th>
+                <th>
+                    Atkovoti kamuoliai
+                </th>
+                <th>
+                    Rezultatyvūs perdavimai
+                </th>
+                <th>
+                    Blokuoti kamuoliai
+                </th>
+                <th>
+                    Prarasti kamuoliai
+                </th>
+                <th>
+                    Pražangos
+                </th>
+                <th>
+                    Sužaista rungtynių
+                </th>
+                <th>
+                    Komanda
+                </th>
+                <th>
+                    Veiksmai
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.Count() != 0)
+            {
+                @foreach (var player in Model)
+                {
+                    <tr>
+                        <td>
+                            @player.Vardas
+                        </td>
+                        <td>
+                            <img src="@player.FotoPath" width="60px" />
+                        </td>
+                        <td>
+                            @player.Position
+                        </td>
+                        <td>
+                            @player.TotalPoints
+                        </td>
+                        <td>
+                            @player.TotalAssist
+                        </td>
+                        <td>
+                            @player.TotalRebounds
+                        </td>
+                        <td>
+                            @player.TotalBlocks
+                        </td>
+                        <td>
+                            @player.TotalTurnovers
+                        </td>
+                        <td>
+                            @player.TotalPersonalFouls
+                        </td>
+                        <td>
+                            @player.GamesPlayer
+                        </td>
+                        <td>
+                            @player.Komanda?.Pavadinimas
+                        </td>
+                        <td text-right">
+                            <a style="margin-bottom:10px;" onclick="jQueryModalGet('?handler=CreateOrEdit&id=@player.ID', 'Redaguoti žaidėją')" class="btn btn-info text-white"> Redaguoti</a>
+                            <form method="post" asp-page="APPlayers" asp-route-id="@player.ID" asp-page-handler="Delete" onsubmit="return jQueryModalDelete(this)" class="d-inline">
+                                <button type="submit" class="btn btn-danger text-white"> Ištrinti</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+    <script>
+        var $table = $('#table');
+
+        $table.bootstrapTable();
+            $(document).ready(function () {
+                $('.fixed-table-toolbar .search input').attr("placeholder", "Paieška");
+                    });
+    </script>

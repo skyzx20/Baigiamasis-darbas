@@ -1,0 +1,170 @@
+﻿@page "{RungtyniuID:int}"
+@model fantazijos_lyga.Pages.AddPlayerStatisticsModel
+@{
+}
+
+@section Styles{
+    <link rel="stylesheet" href="/css/addPlayerStatisticcss.css" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.18.1/dist/bootstrap-table.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+}
+
+@if (Model.Rungtynes != null)
+{
+    <div class="col-lg">
+        <div class="container">
+            <div class="row">
+                <div class="row teamRow">
+                    <div style="display:inline-flex;" class="col-xl-4 homeTeamBlock">
+                        <img src="@Model.Rungtynes?.HomeTeam.Logo" width="70px" class="rounded mx-auto d-block homeTeamLogo" alt="">
+                        <h3 class="teamName">@Model.Rungtynes?.HomeTeam.Pavadinimas</h3><br />
+                    </div>
+                    <div style="margin:auto;" class="col-xl-4 teamBlock">
+                        <div class="timerDiv">
+                            <h3>Rungtynės vyko:</h3>
+                            <h3>@Model.Rungtynes.StartDate</h3>
+                        </div>
+                    </div>
+                    <div style="display:inline-flex;" class="col-xl-4 awayTeamBlock">
+                        <h3 class="awayTeamName">@Model.Rungtynes?.AwayTeam.Pavadinimas</h3><br />
+                        <img src="@Model.Rungtynes?.AwayTeam.Logo" width="70px" class="rounded mx-auto d-block awayTeamLogo" alt="">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr style="width:100%; float:left;" />
+        <h3 style="margin-top:40px">@Model.Rungtynes.HomeTeam.Pavadinimas</h3>
+        <hr style="width:100%;" />
+        <form method="post">
+            <table id="table"
+                   data-toggle="table"
+                   data-search="true">
+                <thead>
+                    <tr style="text-align:center;">
+                        <th data-field="zaidjeas" scope="col">Žaidėjas</th>
+                        <th data-field="name" scope="col">Vardas</th>
+                        <th data-field="minutes" scope="col">MIN</th>
+                        <th data-field="points" scope="col">PTS</th>
+                        <th data-field="rebounds" scope="col">REB</th>
+                        <th data-field="assist" scope="col">AST</th>
+                        <th data-field="turnover" scope="col">TOV</th>
+                        <th data-field="block" scope="col">BLK</th>
+                        <th data-field="personalFoul" scope="col">PF</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <input type="hidden" asp-for="RungtyniuID" value="@Model.RungtyniuID" />
+                    @if (Model.Rungtynes?.HomeTeam?.Zaidejai != null)
+                    {
+                        foreach (var item in Model.Rungtynes?.HomeTeam?.Zaidejai)
+                        {
+                            <tr>
+                                <td scope="row" class="playerRow">
+                                    <img class="Foto" src="@item.FotoPath" height="50px" class="rounded mx-auto d-block" alt="">
+                                    <img class="Foto" src="@Model.Rungtynes?.HomeTeam.Logo" height="30px" class="rounded mx-auto d-block komandosLogo" alt="">
+                                </td>
+
+                                <td>@item.Vardas <input type="hidden" asp-for="Vardas" value="@item.Vardas" /></td>
+                                <td>
+                                    <input style="width:100%;" asp-for="Minutes" value="0:00">
+                                    <span asp-validation-for="Minutes" class="text-danger"></span>
+                                </td>
+                                <td>
+                                    <input type="number" style="width:100%;" min="0" asp-for="Points" value="0">
+                                </td>
+                                <td>
+                                    <input type="number" style="width:100%;" min="0" asp-for="Rebounds" value="0">
+                                </td>
+                                <td>
+                                    <input type="number" style="width:100%;" min="0" asp-for="Assists" value="0">
+                                </td>
+                                <td>
+                                    <input type="number" style="width:100%;" min="0" asp-for="Turnovers" value="0">
+                                </td>
+                                <td>
+                                    <input type="number" style="width:100%;" min="0" asp-for="Blocks" value="0">
+                                </td>
+                                <td>
+                                    <input type="number" style="width:100%;" min="0" asp-for="PersonalFouls" value="0">
+                                </td>
+                            </tr>
+                        }
+
+                    }
+                </tbody>
+            </table>
+            <hr style="width:100%; float:left;" />
+            <h3 style="margin-top:40px">@Model.Rungtynes.AwayTeam.Pavadinimas</h3>
+            <hr style="width:100%;" />
+            <table id="table"
+                   data-toggle="table"
+                   data-search="true">
+                <thead>
+                    <tr style="text-align:center;">
+                        <th data-field="zaidjeas" scope="col">Žaidėjas</th>
+                        <th scope="col">Vardas</th>
+                        <th data-field="minutes" scope="col">MIN</th>
+                        <th data-field="points" scope="col">PTS</th>
+                        <th data-field="rebounds" scope="col">REB</th>
+                        <th data-field="assist" scope="col">AST</th>
+                        <th data-field="turnover" scope="col">TOV</th>
+                        <th data-field="block" scope="col">BLK</th>
+                        <th data-field="personalFoul" scope="col">PF</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <input type="hidden" asp-for="RungtyniuID" value="@Model.RungtyniuID" />
+                    @if (Model.Rungtynes?.AwayTeam?.Zaidejai != null)
+                    {
+                        foreach (var item in Model.Rungtynes?.AwayTeam?.Zaidejai)
+                        {
+                            <tr>
+                                <td scope="row" class="playerRow">
+                                    <img class="Foto" src="@item.FotoPath" height="50px" class="rounded mx-auto d-block" alt="">
+                                    <img class="Foto" src="@Model.Rungtynes?.AwayTeam.Logo" height="30px" class="rounded mx-auto d-block komandosLogo" alt="">
+                                </td>
+
+                                <td>@item.Vardas <input type="hidden" asp-for="Vardas" value="@item.Vardas" /></td>
+                                <td>
+                                    <input style="width:100%;" asp-for="Minutes" value="0:00">
+                                    <span asp-validation-for="Minutes" class="text-danger"></span>
+                                </td>
+                                <td>
+                                    <input style="width:100%;" min="0" asp-for="Points" value="0">
+                                </td>
+                                <td>
+                                    <input style="width:100%;" min="0" asp-for="Rebounds" value="0">
+                                </td>
+                                <td>
+                                    <input style="width:100%;" min="0" asp-for="Assists" value="0">
+                                </td>
+                                <td>
+                                    <input style="width:100%;" min="0" asp-for="Turnovers" value="0">
+                                </td>
+                                <td>
+                                    <input style="width:100%;" min="0" asp-for="Blocks" value="0">
+                                </td>
+                                <td>
+                                    <input style="width:100%;" min="0" asp-for="PersonalFouls" value="0">
+                                </td>
+                            </tr>
+                        }
+
+                    }
+                </tbody>
+            </table>
+            <input style="margin-top:20px; margin-bottom:100px;" id="sukurimoButton" type="submit" value="Sukurti" class="btn login_btn">
+        </form>
+    </div>
+}
+
+@section Scripts
+        {
+    <script src="https://unpkg.com/bootstrap-table@1.18.1/dist/bootstrap-table.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('.fixed-table-toolbar .search input').attr("placeholder", "Paieška");
+    });
+</script>
+}

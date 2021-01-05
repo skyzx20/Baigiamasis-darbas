@@ -1,0 +1,224 @@
+﻿@import url('https://fonts.googleapis.com/css?family=Numans');
+html, body {
+    height: 100%;
+    font-family: 'Numans', sans-serif;
+    padding: 0;
+    margin: 0;
+}
+
+.card-group{
+    margin:auto;
+}
+
+
+.logoVieta {
+    margin-top: 20px;
+}
+
+.bg-light {
+    background-color: black !important;
+    padding: 0;
+    border-bottom: 1px solid rgba(255, 255, 255, .3);
+    -webkit-background-clip: padding-box;
+    background-clip: padding-box;
+    height: 90px;
+}
+
+#matchCol {
+    background-color: black;
+    height: 685px;
+    flex: 0 0 22%;
+}
+
+#mainCol {
+    background-color: #262626;
+    flex: 0 0 78%;
+    max-width: 100%;
+}
+
+.homePage {
+    max-width: none;
+}
+
+.container {
+    max-width: none;
+}
+
+#loginButton {
+    color: #00adb5;
+    padding: 32px;
+    border-radius: 0px;
+    border: none;
+}
+
+#loginButton:hover {
+   background: #00adb5;
+   color: white;
+}
+
+.create-btn {
+    color: #00adb5;
+    padding: 32px;
+    border-radius: 0px;
+    border: none;
+}
+
+.create-btn:hover {
+    background: #00adb5;
+    color: white;
+}
+
+#registerButton {
+    color: #00adb5;
+    padding: 32px;
+    border-radius: 0px;
+    border: none;
+    margin-right: -15px;
+}
+
+    #registerButton:hover {
+        background: #00adb5;
+        color: white;
+    }
+
+.pb-3, .py-3 {
+    padding-bottom: 0 !important;
+}
+
+.siteName {
+    display: inline-block;
+}
+
+    .siteName h2 {
+        color: #00adb5;
+        font-size: 45px;
+        font-weight: bold;
+    }
+
+#test {
+    color: white;
+}
+
+#sukurimoButton {
+    float: left !important;
+    padding: 10px;
+    text-decoration: none;
+    color: white;
+    background: #212121;
+    margin-top:30px;
+}
+#table{
+    width:80%;
+    text-align:center;
+    margin-top:10px;
+}
+#awayTable {
+    width: 80%;
+    text-align: center;
+    margin-top: 10px;
+}
+.dalyvautiButton {
+    color: #00adb5;
+    padding: 32px;
+    border-radius: 0px;
+    border: none;
+    margin-right: -15px;
+}
+
+.sukurimoText{
+    font-size:25px;
+    text-align:center;
+}
+.labelText{
+    font-weight:700;
+}
+.adminPanelImg{
+    float:right;
+    width:450px;
+}
+.match{
+    border:none;
+}
+.statsCreateButton{
+    width:100%;
+    background:#212121;
+    color:white;
+    padding:0;
+    margin:0;
+    border-radius:0;
+    height:30px;
+}
+.matchDate{
+    margin-top:5%;
+}
+#rungtyniuStartText{
+    font-weight:700!important;
+}
+.card{
+    display:inline-flex;
+    width:18%!important;
+    margin-right:1%;
+}
+    .card:hover {
+        box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+        transform: scale(1.05);
+    }
+.card-img-top{
+    margin:auto;
+    width:90%;
+}
+.adminPanelButton{
+    font-weight:700;
+    font-size:17px;
+}
+.adminHr{
+    width:50%;
+    border-top:2px solid #212121;
+}
+.inputText{
+    width:100%;
+}
+.panelName {
+    margin-bottom: 30px;
+    font-size: 25px;
+    font-weight: 700;
+    text-align: center;
+}
+
+@media only screen and (max-width: 1200px) {
+    .adminPanelButton{
+        font-size:15px;
+    }
+}
+@media only screen and (max-width: 750px) {
+    .card-group{
+        width:100%!important;
+    }
+}
+@media only screen and (max-width: 650px) {
+    .adminPanelButton {
+        margin-left:-7%!important;
+    }
+}
+@media only screen and (max-width: 600px) {
+    .adminPanelButton {
+        margin-left: -15% !important;
+    }
+}
+@media only screen and (max-width: 576px) {
+    .card{
+        width:100%!important;
+    }
+    .card-body{
+        text-align:center;
+
+    }
+    .adminPanelButton{
+        margin-left:0%!important;
+        font-size:18px;
+    }
+    .card:hover {
+     
+        transform:none;
+    }
+}

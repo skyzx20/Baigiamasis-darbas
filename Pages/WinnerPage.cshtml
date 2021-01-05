@@ -1,0 +1,153 @@
+﻿@page "{RungtyniuID:int}"
+@model fantazijos_lyga.Pages.WinnerPageModel
+@{
+    var pirmoTaskai = Convert.ToDouble("0");
+    var antroTaskai = Convert.ToDouble("0");
+    var trecioTaskai = Convert.ToDouble("0");
+    var ketvirtoTaskai = Convert.ToDouble("0");
+    var penktoTaskai = Convert.ToDouble("0");
+    var taskai = Convert.ToDouble("0");
+    var vietos = 0;
+}
+@section Styles{
+    <link rel="stylesheet" href="/css/winnerPage.css" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.18.1/dist/bootstrap-table.min.css">
+
+}
+
+    <div class="container">
+        <div class="row">
+            <div style="border-radius:3px;" class="row teamRow">
+                <div style="display:inline-flex;" class="col-xl-4 homeTeamFix">
+                    <img src="@Model.Rungtynes?.HomeTeam.Logo" width="70px" class="rounded mx-auto d-block homeTeamLogo" alt="">
+                    <h3 class="teamName">@Model.Rungtynes?.HomeTeam.Pavadinimas</h3><br />
+                    <h3 class="teamName">@Model.Rungtynes?.HomeTeamScore</h3>
+                </div>
+                <div style="margin:auto;" class="col-xl-4 teamBlock">
+                    <div class="timerDiv">
+                        <h5 style="transform:skew(-30deg); font-weight:700; text-align:center;" id="endDate">Rungtynės vyko</h5>
+                        <h3>@Model.Rungtynes.StartDate</h3>
+                    </div>
+                </div>
+                <div style="display:inline-flex;" class="col-xl-4 awayTeamFix">
+                    <h3 style="margin-left: 8%;" class="teamName">@Model.Rungtynes?.AwayTeamScore</h3>
+                    <h3 class="awayTeamName">@Model.Rungtynes?.AwayTeam.Pavadinimas</h3><br />
+                    <img src="@Model.Rungtynes?.AwayTeam.Logo" width="70px" class="rounded mx-auto d-block awayTeamLogo" alt="">
+                </div>
+            </div>
+        </div>
+        </div>
+    <div class="row">
+        <div class="col-lg-5" style="margin-top:40px;">
+            <h3 id="naudotojuRez" style="font-weight:700; margin-top:15px; font-size:25px">Naudotojų rezultatai</h3>
+            <table id="table"
+                   data-toggle="table"
+                   data-detail-view="true"
+                   data-detail-formatter="detailFormatter"
+                   data-search="true">
+                <thead>
+                    <tr style="text-align:center;">
+                        <th data-sortable="true" data-field="placed" scope="col">Vieta</th>
+                        <th data-sortable="true" data-field="userName" scope="col">Naudotojas</th>
+                        <th data-sortable="true" data-field="pointsEarned" scope="col">Taškai</th>
+                        <th data-visible="false" data-field="zaidejasVienas"></th>
+                        <th data-visible="false" data-field="zaidejasDu"></th>
+                        <th data-visible="false" data-field="zaidejasTrys"></th>
+                        <th data-visible="false" data-field="zaidejasKeturi"></th>
+                        <th data-visible="false" data-field="zaidejasPenki"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.NaudotojoPicks)
+                    {
+                        {
+                            pirmoTaskai = Model.Rungtynes.RungtyniuStatistikos.FirstOrDefault(stats => stats.ZaidejasID == item.ZaidejasPirmasID) == null ? Convert.ToDouble("0") : Model.Rungtynes.RungtyniuStatistikos.FirstOrDefault(stats => stats.ZaidejasID == item.ZaidejasPirmasID).GautuTaskuKiekis;
+                            antroTaskai = Model.Rungtynes.RungtyniuStatistikos.FirstOrDefault(stats => stats.ZaidejasID == item.ZaidejasAntrasID) == null ? 0 : Model.Rungtynes.RungtyniuStatistikos.FirstOrDefault(stats => stats.ZaidejasID == item.ZaidejasAntrasID).GautuTaskuKiekis;
+                            trecioTaskai = Model.Rungtynes.RungtyniuStatistikos.FirstOrDefault(stats => stats.ZaidejasID == item.ZaidejasTreciasID) == null ? 0 : Model.Rungtynes.RungtyniuStatistikos.FirstOrDefault(stats => stats.ZaidejasID == item.ZaidejasTreciasID).GautuTaskuKiekis;
+                            ketvirtoTaskai = Model.Rungtynes.RungtyniuStatistikos.FirstOrDefault(stats => stats.ZaidejasID == item.ZaidejasKetvirtasID) == null ? 0 : Model.Rungtynes.RungtyniuStatistikos.FirstOrDefault(stats => stats.ZaidejasID == item.ZaidejasKetvirtasID).GautuTaskuKiekis;
+                            penktoTaskai = Model.Rungtynes.RungtyniuStatistikos.FirstOrDefault(stats => stats.ZaidejasID == item.ZaidejasPenktasID) == null ? 0 : Model.Rungtynes.RungtyniuStatistikos.FirstOrDefault(stats => stats.ZaidejasID == item.ZaidejasPenktasID).GautuTaskuKiekis;
+                            vietos += 1;
+                        }
+                        <tr>
+                            <th scope="row">@vietos</th>
+                            <td>@item.User.Username</td>
+                            <td>@(item.TotalPoints = pirmoTaskai + antroTaskai + trecioTaskai + ketvirtoTaskai + penktoTaskai)</td>
+                            <td><img style="width:60px; margin-bottom:10px;" src="@item.ZaidejasPirmas.FotoPath" />@item.ZaidejasPirmas.Vardas @pirmoTaskai</td>
+                            <td><img style="width:60px; margin-bottom:10px;" src="@item.ZaidejasAntras.FotoPath" />@item.ZaidejasAntras.Vardas @antroTaskai</td>
+                            <td><img style="width:60px; margin-bottom:10px;" src="@item.ZaidejasTrecias.FotoPath" />@item.ZaidejasTrecias.Vardas @trecioTaskai</td>
+                            <td><img style="width:60px; margin-bottom:10px;" src="@item.ZaidejasKetvirtas.FotoPath" />@item.ZaidejasKetvirtas.Vardas @ketvirtoTaskai</td>
+                            <td><img style="width:60px; margin-bottom:10px;" src="@item.ZaidejasPenktas.FotoPath" />@item.ZaidejasPenktas.Vardas @penktoTaskai</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            @section Scripts
+             {
+                <script src="https://unpkg.com/bootstrap-table@1.18.1/dist/bootstrap-table.min.js"></script>
+                <script>
+                    function detailFormatter(index, row) {
+                        var html = []
+                        html.push(row["zaidejasVienas"] + '<br />')
+                        html.push(row["zaidejasDu"] + '<br />')
+                        html.push(row["zaidejasTrys"] + '<br />')
+                        html.push(row["zaidejasKeturi"] + '<br />')
+                        html.push(row["zaidejasPenki"] + '<br />')
+                        return html.join('')
+                    }
+                </script>
+                <script>
+                    $(document).ready(function () {
+                        $('.fixed-table-toolbar .search input').attr("placeholder", "Paieška");
+                    });
+                </script>
+            }
+
+
+        </div>
+        <div class="col-lg-7" style="margin-top:40px;">
+            <h3 id="naudotojuRez" style="font-weight:700; margin-top:15px; font-size:25px">Žaidėjų rezultatai</h3>
+            <table id="table"
+                   data-toggle="table"
+                   data-search="true">
+                <thead>
+                    <tr style="text-align:center;">
+                        <th data-field="zaidejasName" scope="col">Žaidėjas</th>
+                        <th data-field="zaidejasTeamLogo" scope="col">Vardas</th>
+                        <th data-field="gamesPlayed" scope="col">MIN</th>
+                        <th data-sortable="true" data-field="pointsPerGame" scope="col">PTS</th>
+                        <th data-sortable="true" data-field="assistPerGame" scope="col">REB</th>
+                        <th data-sortable="true" data-field="reboundsPerGame" scope="col">AST</th>
+                        <th data-sortable="true" data-field="blocksPerGame" scope="col">TOV</th>
+                        <th data-sortable="true" data-field="personalFouls" scope="col">BLK</th>
+                        <th data-sortable="true" data-field="turnovers" scope="col">PF</th>
+                        <th data-sortable="true" data-field="price" scope="col">Taškai</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Rungtynes.RungtyniuStatistikos)
+                    {
+                        <tr>
+                            <th scope="row">
+                                <img class="Foto" src="@item.Zaidejas.Komanda?.Logo" height="30px" style="margin-left:75%;" class="rounded mx-auto d-block komandosLogo" alt="">
+                                <img class="Foto" src="@item.Zaidejas.FotoPath" height="50px" class="rounded mx-auto d-block" alt="">
+                            </th>
+                            <td>@item.Zaidejas.Vardas</td>
+                            <td>@item.MIN</td>
+                            <td>@item.PTS</td>
+                            <td>@item.REB</td>
+                            <td>@item.AST</td>
+                            <td>@item.TOV</td>
+                            <td>@item.BLK</td>
+                            <td>@item.PF</td>
+                            <td>@item.GautuTaskuKiekis</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+

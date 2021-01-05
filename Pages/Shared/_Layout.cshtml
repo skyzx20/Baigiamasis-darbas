@@ -1,0 +1,92 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Fantazijos-Lyga</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/css/site.css" />
+    <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.18.1/dist/bootstrap-table.min.css">
+    @RenderSection("Styles", required: false)
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="list-style-type:none; height:90px;">
+        <a class="navbar-brand" href="/">
+            <img src="/img/logo.png" height="125px" class="d-inline-block align-top" alt="">
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/">Rungtynės <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="/kaipZaisti">Kaip žaisti ?</a>
+                </li>
+                @if (User.IsInRole("1") == true)
+                {
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/AdminPanel">Admin panelė</a>
+                    </li>
+                }
+            </ul>
+            @if (User.Claims.Count() == 0)
+            {
+                <li class="nav-item active">
+                    <a class="btn btn-outline-warning" id="loginButton" href="/login" role="button">Prisijungti</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="btn btn-outline-warning" id="registerButton" href="/register" role="button">Registruotis</a>
+                </li>
+            }
+            else
+            {
+                <li class="nav-item">
+                    <h4 class="userName">Sveiki, @User.Claims.FirstOrDefault(item => item.Type == System.Security.Claims.ClaimTypes.Name).Value </h4>
+                </li>
+                <li class="nav-item">
+                    <a class="btn btn-outline-warning" id="logOut" asp-page="LogOut" role="button">Atsijungti</a>
+                </li>
+            }
+        </div>
+    </nav>
+    <div class="container">
+        <!--// Modal \\-->
+        <div class="modal fade" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" id="form-modal">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title"></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--// Modal \\-->
+
+        <main role="main" class="pb-3">
+            @RenderBody()
+            <div id="wrapper">
+
+            </div>
+        </main>
+    </div>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/jquery-easing/jquery.easing.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/crud.js"></script>
+    <script src="https://unpkg.com/bootstrap-table@1.18.1/dist/bootstrap-table.min.js"></script>
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

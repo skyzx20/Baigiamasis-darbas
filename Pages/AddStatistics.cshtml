@@ -1,0 +1,55 @@
+﻿@page
+@model fantazijos_lyga.Pages.AddStatisticsModel
+@{
+}
+@section Styles{
+    <link rel="stylesheet" href="/css/addStatistics.css" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+}
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<div id="main">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-12">
+                <h4 style="margin-top:20px;" class="sukurimoText">Administratoriaus panelė</h4>
+                <hr style="width:30%;" class="adminHr" /><br />
+                <h5 style="margin-top:-20px; margin-bottom:40px;" class="sukurimoText">Statistikos sukūrimas</h5>
+                @foreach (var item in Model.matches.Where(item => item.RungtyniuStatistikos?.Count == 0))
+                {
+                    if (item.StartDate < DateTime.Now)
+                    {
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="col-md-6 match rungtynes" style="overflow: hidden;">
+                                    <div id="firstMatchColumn" class="row justify-content-md-center" style="border-bottom: 2px solid black;">
+                                        <div class="col-md-4 homeTeam">
+                                            <img src="@item.AwayTeam.Logo" width="70px" class="rounded mx-auto d-block" alt="">
+                                            <h3 class="teamName">@item.AwayTeam.Pavadinimas</h3><br />
+                                        </div>
+                                        <div class="col-md-4 matchDate">
+                                            <h5 id="rungtyniuStartText">Rungtynės vyko: @item.StartDate</h5>
+                                        </div>
+                                        <div class="col-md-4 awayTeam">
+                                            <img src="@item.HomeTeam.Logo" width="70px" class="rounded mx-auto d-block" alt="">
+                                            <h3 class="teamName">@item.HomeTeam.Pavadinimas</h3><br />
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div style="padding:0;" class="col-xl-12">
+                                            <a class="btn btn-default statsCreateButton" asp-page="/AddPlayerStatistics" asp-route-RungtyniuID="@item.ID">Sukurti</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="empty" style="margin-top:20px;margin-bottom"></div>
+                    }
+                    else
+                    {
+
+                    }
+
+                }
+            </div>
+    </div>
+</div>

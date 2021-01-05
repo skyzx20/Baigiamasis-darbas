@@ -1,0 +1,45 @@
+﻿@model fantazijos_lyga.Duomenu_baze.Rungtynes
+<form id="create-form" method="post" asp-page="APMatch" asp-route-id="@Model.ID" asp-page-handler="CreateOrEdit" onsubmit="return jQueryModalPost(this);">
+    <div class="form-group row">
+        <label class="col-md-3 col-form-label">Namų komanda:</label>
+        <div class="col-md-9">
+            <select asp-for="HomeTeamID" class="form-control" asp-items="Model.komanduList"></select>
+            <span asp-validation-for="komanduList" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-3 col-form-label">Namų komandos rezultatas:</label>
+        <div class="col-md-9">
+            <input min="0" autocomplete="off" asp-for="HomeTeamScore" class="form-control">
+            <span asp-validation-for="HomeTeamScore" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-3 col-form-label">Išvykos komanda:</label>
+        <div class="col-md-9">
+            <select asp-for="AwayTeamID" class="form-control" asp-items="Model.komanduList"></select>
+            <span asp-validation-for="komanduList" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-3 col-form-label">Išvykos komandos rezultatas:</label>
+        <div class="col-md-9">
+            <input min="0" autocomplete="off" asp-for="AwayTeamScore" class="form-control">
+            <span asp-validation-for="AwayTeamScore" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-3 col-form-label">Rungtynių laikas:</label>
+        <div class="col-md-9">
+            <input min="0" autocomplete="off" asp-for="StartDate" class="form-control">
+            <span asp-validation-for="StartDate" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group justify-content-between">
+        <button type="button" class="btn btn-secondary close-button" data-dismiss="modal">Atšaukti</button>
+        <button type="submit" class="btn btn-primary save-button">Išsaugoti</button>
+    </div>
+</form>
+<script type="text/javascript" language=javascript>
+    $.validator.unobtrusive.parse(document);
+</script>

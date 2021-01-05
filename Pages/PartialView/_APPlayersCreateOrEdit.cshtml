@@ -1,0 +1,87 @@
+﻿@model fantazijos_lyga.Duomenu_baze.Zaidejas
+<form id="create-form" method="post" asp-page="APPlayers" asp-route-id="@Model.ID" asp-page-handler="CreateOrEdit" onsubmit="return jQueryModalPost(this);">
+    <div class="form-group row">
+        <label class="col-md-3 col-form-label">Vardas:</label>
+        <div class="col-md-9">
+            <input autocomplete="off" asp-for="Vardas" class="form-control">
+            <span asp-validation-for="Vardas" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-3 col-form-label">Nuotraukos adresas:</label>
+        <div class="col-md-9">
+            <input autocomplete="off" asp-for="FotoPath" class="form-control">
+            <span asp-validation-for="FotoPath" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-3 col-form-label">Pozicija:</label>
+        <div class="col-md-9">
+            <select asp-for="Position" class="form-control" asp-items="Model.pozicijuList"></select>
+            <span asp-validation-for="Position" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-3 col-form-label">Karjieros taškai:</label>
+        <div class="col-md-9">
+            <input min="0" autocomplete="off" asp-for="TotalPoints" class="form-control">
+            <span asp-validation-for="TotalPoints" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-3 col-form-label">Karjieros atkovoti kamuoliai:</label>
+        <div class="col-md-9">
+            <input min="0" autocomplete="off" asp-for="TotalRebounds" class="form-control">
+            <span asp-validation-for="TotalRebounds" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-3 col-form-label">Karjieros rezultatyvūs perdavimai:</label>
+        <div class="col-md-9">
+            <input min="0" autocomplete="off" asp-for="TotalAssist" class="form-control">
+            <span asp-validation-for="TotalAssist" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-3 col-form-label">Karjieros blokuoti kamuoliai:</label>
+        <div class="col-md-9">
+            <input min="0" autocomplete="off" asp-for="TotalBlocks" class="form-control">
+            <span asp-validation-for="TotalBlocks" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-3 col-form-label">Karjieros prarasti kamuoliai:</label>
+        <div class="col-md-9">
+            <input min="0" autocomplete="off" asp-for="TotalTurnovers" class="form-control">
+            <span asp-validation-for="TotalTurnovers" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-3 col-form-label">Karjieros pražangos:</label>
+        <div class="col-md-9">
+            <input min="0" autocomplete="off" asp-for="TotalPersonalFouls" class="form-control">
+            <span asp-validation-for="TotalPersonalFouls" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-3 col-form-label">Sužaista rungtynių:</label>
+        <div class="col-md-9">
+            <input min="0" autocomplete="off" asp-for="GamesPlayer" class="form-control">
+            <span asp-validation-for="GamesPlayer" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-3 col-form-label">Komanda:</label>
+        <div class="col-md-9">
+            <select asp-for="KomandaID" class="form-control" asp-items="Model.komanduList"></select>
+            <span asp-validation-for="komanduList" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group justify-content-between">
+        <button type="button" class="btn btn-secondary close-button" data-dismiss="modal">Atšaukti</button>
+        <button type="submit" class="btn btn-primary save-button">Išsaugoti</button>
+    </div>
+</form>
+<script type="text/javascript" language=javascript>
+    $.validator.unobtrusive.parse(document);
+</script>

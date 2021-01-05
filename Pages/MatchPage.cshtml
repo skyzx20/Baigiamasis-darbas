@@ -1,0 +1,307 @@
+﻿@page "{RungtyniuID:int}"
+@model fantazijos_lyga.Pages.MatchPageModel
+@using Microsoft.AspNetCore.Antiforgery
+
+@inject IAntiforgery antiforgery
+@{
+    ViewData["Title"] = "Rungtynės";
+
+    var token = antiforgery.GetAndStoreTokens(HttpContext).RequestToken;
+    double points = 0;
+    double assist = 0;
+    double rebounds = 0;
+    double blocks = 0;
+    double personalFouls = 0;
+    double turnovers = 0;
+
+
+}
+@section Styles{
+    <link rel="stylesheet" href="/css/matchPage.css" />
+    <script src="/js/admin.js"></script>
+    <script src="/js/matchCountdown.js"></script>
+    <script src="/js/playerAdder.js"></script>
+    <script src="/js/playerRemove.js"></script>
+    <script src="/js/confirmPicksjs.js"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.18.1/dist/bootstrap-table.min.css">
+
+}
+
+@if (ViewData["Error"] != null)
+{
+    <h1>@ViewData["Error"]</h1>
+}
+
+
+<div class="homePage">
+    <div class="row">
+        <div id="main">
+            <div class="container-page">
+                <div style="border-radius:3px;" class="row teamRow">
+                    <div style="display:inline-flex;" class="col-xl-4 homeTeamBlock">
+                        <img src="@Model.Rungtynes?.HomeTeam.Logo" width="70px" class="rounded mx-auto d-block homeTeamLogo" alt="">
+                        <h3 class="teamName">@Model.Rungtynes?.HomeTeam.Pavadinimas</h3><br />
+                    </div>
+                    <div style="margin:auto;" class="col-xl-4 teamBlock">
+                        <div class="timerDiv">
+                            <h3>Iki rungtynių liko:</h3><br />
+                            <h3 id="matchCountdown">
+                                @if (Model.Rungtynes != null)
+                                {
+                                    <script>gameStartCountdown('@Model.Rungtynes.StartDate')</script>
+                                }
+                            </h3>
+                        </div>
+                    </div>
+                    <div style="display:inline-flex;" class="col-xl-4 awayTeamBlock">
+                        <h3 class="awayTeamName">@Model.Rungtynes?.AwayTeam.Pavadinimas</h3><br />
+                        <img src="@Model.Rungtynes?.AwayTeam.Logo" width="70px" class="rounded mx-auto d-block awayTeamLogo" alt="">
+                    </div>
+                </div>
+                <hr />
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-9 tableStart">
+                            <div class="teamInfo">
+                                <img class="homeTeamSelectLogo" src="@Model.Rungtynes.HomeTeam.Logo" height="50px" class="rounded mx-auto d-block" alt="">
+                                <h4>@Model.Rungtynes?.HomeTeam.Pavadinimas</h4>
+                            </div>
+                            <table id="table"
+                                   data-toggle="table"
+                                   data-search="true"
+                                   data-searchable-placeholder="Paieška">
+                                <thead>
+                                    <tr>
+                                        <th data-width="30%" data-field="add-button" scope="col">Kviesti</th>
+                                        <th data-width="20%" data-field="zaidejasName" scope="col">Vardas</th>
+                                        <th data-width="10%" data-field="zaidejasTeamLogo" scope="col">Pozicija</th>
+                                        <th data-width="5%" data-sortable="true" data-field="gamesPlayed" scope="col">GP</th>
+                                        <th data-width="5%" data-sortable="true" data-field="pointsPerGame" scope="col">PPG</th>
+                                        <th data-width="5%" data-sortable="true" data-field="assistPerGame" scope="col">APG</th>
+                                        <th data-width="5%" data-sortable="true" data-field="reboundsPerGame" scope="col">RPG</th>
+                                        <th data-width="5%" data-sortable="true" data-field="blocksPerGame" scope="col">BLK</th>
+                                        <th data-width="5%" data-sortable="true" data-field="personalFouls" scope="col">PF</th>
+                                        <th data-width="5%" data-sortable="true" data-field="turnovers" scope="col">TOV</th>
+                                        <th data-width="5%" data-sortable="true" data-field="price" scope="col">Kaina</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (Model.Rungtynes?.HomeTeam?.Zaidejai != null)
+                                    {
+                                        foreach (var item in Model.Rungtynes?.HomeTeam?.Zaidejai)
+                                        {
+                                            <tr id="@(item.Vardas.Replace(" ", "_"))_@(Model.Rungtynes?.HomeTeam.Pavadinimas.Replace(" ", "_"))">
+                                                <td>
+                                                    <button id="@(item.Vardas.Replace(" ", "_"))" type="button" onclick="AddPlayerToArray('@(item.Vardas.Replace(" ", "_"))_@(Model.Rungtynes?.HomeTeam.Pavadinimas.Replace(" ", "_"))', '@(item.Vardas.Replace(" ", "_"))')" class="btn btn-info playerAdd"><i class="fas fa-check"></i></button>
+                                                </td>
+                                                <td scope="row">
+                                                    <img class="Foto" src="@item.FotoPath" height="50px" class="rounded mx-auto d-block" alt="">
+                                                    <h5 class="playerNameInList">@item.Vardas</h5>
+                                                    <img style="display:none;" class="homeTeamLogo" src="@Model.Rungtynes.HomeTeam.Logo" height="50px" class="rounded mx-auto d-block" alt="">
+                                                </td>
+
+                                                @{
+                                                    points = Model.CalculateAvg(Convert.ToDouble(item.TotalPoints), Convert.ToDouble(item.GamesPlayer));
+                                                    assist = Model.CalculateAvg(Convert.ToDouble(item.TotalAssist), Convert.ToDouble(item.GamesPlayer));
+                                                    rebounds = Model.CalculateAvg(Convert.ToDouble(item.TotalRebounds), Convert.ToDouble(item.GamesPlayer));
+                                                    blocks = Model.CalculateAvg(Convert.ToDouble(item.TotalBlocks), Convert.ToDouble(item.GamesPlayer));
+                                                    personalFouls = Model.CalculateAvg(Convert.ToDouble(item.TotalPersonalFouls), Convert.ToDouble(item.GamesPlayer));
+                                                    turnovers = Model.CalculateAvg(Convert.ToDouble(item.TotalTurnovers), Convert.ToDouble(item.GamesPlayer));
+                                                }
+
+                                                <td>@item.Position</td>
+                                                <td>@item.GamesPlayer</td>
+                                                <td>@points.ToString("0.0").Replace(',', '.')</td>
+                                                <td>@assist.ToString("0.0").Replace(',', '.')</td>
+                                                <td>@rebounds.ToString("0.0").Replace(',', '.')</td>
+                                                <td>@blocks.ToString("0.0").Replace(',', '.')</td>
+                                                <td>@personalFouls.ToString("0.0").Replace(',', '.')</td>
+                                                <td>@turnovers.ToString("0.0").Replace(',', '.')</td>
+                                                <td>@item.Kaina</td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                            <hr />
+                            <div class="teamInfo">
+                                <img class="homeTeamSelectLogo" src="@Model.Rungtynes.AwayTeam.Logo" height="50px" class="rounded mx-auto d-block" alt="">
+                                <h4>@Model.Rungtynes?.AwayTeam.Pavadinimas</h4>
+                            </div>
+                            <table id="table"
+                                   data-toggle="table"
+                                   data-search="true">
+                                <thead>
+                                    <tr>
+                                        <th data-width="5%" data-field="add-button" scope="col">Kviesti</th>
+                                        <th data-width="45%" data-field="zaidejasName" scope="col">Vardas</th>
+                                        <th data-width="10%" data-field="zaidejasTeamLogo" scope="col">Pozicija</th>
+                                        <th data-width="5%" data-sortable="true" data-field="gamesPlayed" scope="col">GP</th>
+                                        <th data-width="5%" data-sortable="true" data-field="pointsPerGame" scope="col">PPG</th>
+                                        <th data-width="5%" data-sortable="true" data-field="assistPerGame" scope="col">APG</th>
+                                        <th data-width="5%" data-sortable="true" data-field="reboundsPerGame" scope="col">RPG</th>
+                                        <th data-width="5%" data-sortable="true" data-field="blocksPerGame" scope="col">BLK</th>
+                                        <th data-width="5%" data-sortable="true" data-field="personalFouls" scope="col">PF</th>
+                                        <th data-width="5%" data-sortable="true" data-field="turnovers" scope="col">TOV</th>
+                                        <th data-width="5%" data-sortable="true" data-field="price" scope="col">Kaina</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (Model.Rungtynes?.AwayTeam?.Zaidejai != null)
+                                    {
+                                        foreach (var item in Model.Rungtynes?.AwayTeam?.Zaidejai)
+                                        {
+                                            <tr id="@(item.Vardas.Replace(" ", "_"))_@(Model.Rungtynes?.AwayTeam.Pavadinimas.Replace(" ", "_"))">
+                                                <td>
+                                                    <button id="@(item.Vardas.Replace(" ", "_"))" type="button" onclick="AddPlayerToArray('@(item.Vardas.Replace(" ", "_"))_@(Model.Rungtynes?.AwayTeam.Pavadinimas.Replace(" ", "_"))', '@(item.Vardas.Replace(" ", "_"))')" class="btn btn-info playerAdd"><i class="fas fa-check"></i></button>
+                                                </td>
+                                                <td scope="row">
+                                                    <img class="Foto" src="@item.FotoPath" height="50px" class="rounded mx-auto d-block" alt="">
+                                                    <h5 class="playerNameInList">@item.Vardas</h5>
+                                                    <img style="display:none;" class="homeTeamLogo" src="@Model.Rungtynes.AwayTeam.Logo" height="50px" class="rounded mx-auto d-block" alt="">
+                                                </td>
+
+                                                @{
+                                                    points = Convert.ToDouble(item.TotalPoints) / Convert.ToDouble(item.GamesPlayer);
+                                                    assist = Convert.ToDouble(item.TotalAssist) / Convert.ToDouble(item.GamesPlayer);
+                                                    rebounds = Convert.ToDouble(item.TotalRebounds) / Convert.ToDouble(item.GamesPlayer);
+                                                    blocks = Convert.ToDouble(item.TotalBlocks) / Convert.ToDouble(item.GamesPlayer);
+                                                    personalFouls = Convert.ToDouble(item.TotalPersonalFouls) / Convert.ToDouble(item.GamesPlayer);
+                                                    turnovers = Convert.ToDouble(item.TotalTurnovers) / Convert.ToDouble(item.GamesPlayer);
+                                                }
+
+                                                <td>@item.Position</td>
+                                                <td>@item.GamesPlayer</td>
+                                                <td>@points.ToString("0.0").Replace(',', '.')</td>
+                                                <td>@assist.ToString("0.0").Replace(',', '.')</td>
+                                                <td>@rebounds.ToString("0.0").Replace(',', '.')</td>
+                                                <td>@blocks.ToString("0.0").Replace(',', '.')</td>
+                                                <td>@personalFouls.ToString("0.0").Replace(',', '.')</td>
+                                                <td>@turnovers.ToString("0.0").Replace(',', '.')</td>
+                                                <td>@item.Kaina</td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-md-3 selectedPlayers">
+                            <h3>Komanda</h3>
+                            <table id="table"
+                                   data-toggle="table"
+                            <thead>
+                            <tr>
+                            <th data-width="50%" data-field="playerName" scope="col">Vardas</th>
+                            <th data-width="25%" data-field="price" scope="col">Kaina</th>
+                            <th data-width="25%" data-field="remove-player" scope="col">Atsisakyti</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                            <td class="playerTemplateRow" scope="row">
+                            <img src="@(Model.NaudotojoPick == null ? "https://www.nba.com/stats/media/img/no-headshot_small.png" : Model.NaudotojoPick.ZaidejasPirmas.Komanda.Logo)" height="30px" class="rounded mx-auto d-block teamPickImg" alt="">
+                            <img src="@(Model.NaudotojoPick == null ? "https://www.nba.com/stats/media/img/no-headshot_small.png" : Model.NaudotojoPick.ZaidejasPirmas.FotoPath)" height="50px" class="playerPickIMG" alt="">
+                            <h5 class="playerPickName">@(Model.NaudotojoPick == null ? "Vardas" : Model.NaudotojoPick.ZaidejasPirmas.Vardas)</h5>
+
+                            </td>
+                            <td class="playerPickPrice">@(Model.NaudotojoPick == null ? "Kaina" : Model.NaudotojoPick.ZaidejasPirmas.Kaina)</td>
+                            <td>
+                            <button type="button" onclick="RemovePlayerFromArray(0)" class="btn btn-info playerRemove"><i class="fas fa-times"></i></button>
+                            </td>
+                            </tr>
+                            <tr>
+                            <td class="playerTemplateRow" scope="row">
+                            <img src="@(Model.NaudotojoPick == null ? "https://www.nba.com/stats/media/img/no-headshot_small.png" : Model.NaudotojoPick.ZaidejasAntras.Komanda.Logo)" height="30px" class="rounded mx-auto d-block teamPickImg" alt="">
+                            <img src="@(Model.NaudotojoPick == null ? "https://www.nba.com/stats/media/img/no-headshot_small.png" : Model.NaudotojoPick.ZaidejasAntras.FotoPath)" height="50px" class="playerPickIMG" alt="">
+                            <h5 class="playerPickName">@(Model.NaudotojoPick == null ? "Vardas" : Model.NaudotojoPick.ZaidejasAntras.Vardas)</h5>
+
+                            </td>
+                            <td class="playerPickPrice">@(Model.NaudotojoPick == null ? "Kaina" : Model.NaudotojoPick.ZaidejasAntras.Kaina)<e /td>
+                            <td>
+                            <button type="button" onclick="RemovePlayerFromArray(1)" class="btn btn-info playerRemove"><i class="fas fa-times"></i></button>
+                            </td>
+                            </tr>
+                            <tr>
+                            <td class="playerTemplateRow" scope="row">
+                            <img src="@(Model.NaudotojoPick == null ? "https://www.nba.com/stats/media/img/no-headshot_small.png" : Model.NaudotojoPick.ZaidejasTrecias.Komanda.Logo)" height="30px" class="rounded mx-auto d-block teamPickImg" alt="">
+                            <img src="@(Model.NaudotojoPick == null ? "https://www.nba.com/stats/media/img/no-headshot_small.png" : Model.NaudotojoPick.ZaidejasTrecias.FotoPath)" height="50px" class="playerPickIMG" alt="">
+                            <h5 class="playerPickName">@(Model.NaudotojoPick == null ? "Vardas" : Model.NaudotojoPick.ZaidejasTrecias.Vardas)</h5>
+
+                            </td>
+                            <td class="playerPickPrice">@(Model.NaudotojoPick == null ? "Kaina" : Model.NaudotojoPick.ZaidejasTrecias.Kaina)</td>
+                            <td>
+                            <button type="button" onclick="RemovePlayerFromArray(2)" class="btn btn-info playerRemove"><i class="fas fa-times"></i></button>
+                            </td>
+                            </tr>
+                            <tr>
+                            <td class="playerTemplateRow" scope="row">
+                            <img src="@(Model.NaudotojoPick == null ? "https://www.nba.com/stats/media/img/no-headshot_small.png" : Model.NaudotojoPick.ZaidejasKetvirtas.Komanda.Logo)" height="30px" class="rounded mx-auto d-block teamPickImg" alt="">
+                            <img src="@(Model.NaudotojoPick == null ? "https://www.nba.com/stats/media/img/no-headshot_small.png" : Model.NaudotojoPick.ZaidejasKetvirtas.FotoPath)" height="50px" class="playerPickIMG" alt="">
+                            <h5 class="playerPickName">@(Model.NaudotojoPick == null ? "Vardas" : Model.NaudotojoPick.ZaidejasKetvirtas.Vardas)</h5>
+
+                            </td>
+                            <td class="playerPickPrice">@(Model.NaudotojoPick == null ? "Kaina" : Model.NaudotojoPick.ZaidejasKetvirtas.Kaina)</td>
+                            <td>
+                            <button type="button" onclick="RemovePlayerFromArray(3)" class="btn btn-info playerRemove"><i class="fas fa-times"></i></button>
+                            </td>
+                            </tr>
+                            <tr>
+                            <td class="playerTemplateRow" scope="row">
+                            <img src="@(Model.NaudotojoPick == null ? "https://www.nba.com/stats/media/img/no-headshot_small.png" : Model.NaudotojoPick.ZaidejasPenktas.Komanda.Logo)" height="30px" class="rounded mx-auto d-block teamPickImg" alt="">
+                            <img src="@(Model.NaudotojoPick == null ? "https://www.nba.com/stats/media/img/no-headshot_small.png" : Model.NaudotojoPick.ZaidejasPenktas.FotoPath)" height="50px" class="playerPickIMG" alt="">
+                            <h5 class="playerPickName">@(Model.NaudotojoPick == null ? "Vardas" : Model.NaudotojoPick.ZaidejasPenktas.Vardas)</h5>
+
+                            </td>
+                            <td class="playerPickPrice">@(Model.NaudotojoPick == null ? "Kaina" : Model.NaudotojoPick.ZaidejasPenktas.Kaina)</td>
+                            <td>
+                            <button type="button" onclick="RemovePlayerFromArray(4)" class="btn btn-info playerRemove"><i class="fas fa-times"></i></button>
+                            </td>
+                            </tr>
+                            </tbody>
+                            </table>
+                            <hr />
+                            <div id="Error" class="text-danger">
+
+                            </div>
+                            <div onload="playerDisableOnLoad()" class="matchRegisterArea">
+                                <h3 style="font-weight:700;">Turimi pinigai</h3>
+                                <h3 style="font-weight:700;" id="money">@(Model.NaudotojoPick == null ? 10000 : Model.NaudotojoPick?.likoPinigu)</h3><br />
+                                <button type="button" onclick="ConfirmPicks(@Model.RungtyniuID, @User.Claims.FirstOrDefault(item => item.Type == "UserId" ).Value, '@token')" class="btn btn-info playerPickButton">Dalyvauti</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @section Scripts
+        {
+            <script src="https://unpkg.com/bootstrap-table@1.18.1/dist/bootstrap-table.min.js"></script>
+            <script>
+                $(document).ready(function () {
+                    $('.fixed-table-toolbar .search input').attr("placeholder", "Paieška");
+                });
+            </script>
+        }
+
+        <script>
+
+            function playerDisableOnLoad() {
+                var firstPick = document.getElementsByClassName("playerPickName")[0].innerHTML.replace(" ", "_");
+                var firstPickDisable = document.getElementById(firstPick).disabled = true;
+
+                var secondPick = document.getElementsByClassName("playerPickName")[1].innerHTML.replace(" ", "_");
+                var secondPickDisable = document.getElementById(secondPick).disabled = true;
+
+                var thirdPick = document.getElementsByClassName("playerPickName")[2].innerHTML.replace(" ", "_");
+                var thirdPickDisable = document.getElementById(thirdPick).disabled = true;
+
+                var forthPick = document.getElementsByClassName("playerPickName")[3].innerHTML.replace(" ", "_");
+                var forthPickDisable = document.getElementById(forthPick).disabled = true;
+
+                var fifthPick = document.getElementsByClassName("playerPickName")[4].innerHTML.replace(" ", "_");
+                var fifthPickDisable = document.getElementById(fifthPick).disabled = true;
+            }
+            window.onload = playerDisableOnLoad;
+        </script>

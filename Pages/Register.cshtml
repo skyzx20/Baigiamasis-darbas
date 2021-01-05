@@ -1,0 +1,56 @@
+﻿@page
+@model fantazijos_lyga.Pages.RegisterModel
+@{
+    ViewData["Title"] = "Register";
+}
+@section Styles{
+    <link rel="stylesheet" href="~/css/login.css" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.2/dist/jquery.validate.js" />
+}
+<div class="container">
+    <div class="d-flex justify-content-center h-100">
+        <div class="card">
+            <div class="card-header">
+                <h3>Registruotis</h3>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    <div asp-validation-summary="All" class="text-danger"></div>
+                    <div class="input-group form-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-user"></i></span>
+                        </div>
+                        <input asp-for="@Model.Username" type="text" class="form-control input_user" value="@Model.Username" placeholder="Slapyvardis">
+                    </div>
+                    <div class="input-group form-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fa fa-envelope"></i></span>
+                        </div>
+                        <input asp-for="@Model.Email" name="email" type="text" class="form-control input_user" value="@Model.Email" placeholder="El. Paštas">
+                    </div>
+                    <div class="input-group form-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-key"></i></span>
+                        </div>
+                        <input asp-for="@Model.Password" type="password" class="form-control input_pass" placeholder="Slaptažodis">
+                    </div>
+                    <div class="input-group form-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-key"></i></span>
+                        </div>
+                        <input asp-for="@Model.PasswordRepeat" type="password" class="form-control input_pass" placeholder="Pakartoti slaptažodį">
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Registruotis" class="btn float-right login_btn" id="register-btn">
+                    </div>
+                </form>
+            </div>
+            <div class="card-footer">
+                <div class="d-flex justify-content-center links">
+                    Jau turite paskyrą ?<a href="/login">Prisijunkite</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,67 @@
+﻿@page
+@model fantazijos_lyga.Pages.AddPlayerModel
+@{
+}
+
+@section Styles{
+    <link rel="stylesheet" href="/css/adminPanel.css" />
+}
+
+<div id="mySidenav" class="sidenav">
+    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+    <a href="/AddTeam">Sukurti rungtynes</a>
+    <a href="/AddPlayer">Sukurti žaidėją</a>
+    <a href="/AddStatistics">Sukurti statistiką</a>
+</div>
+
+<div id="main">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg">
+                <h4 class="sukurimoText">
+                    <span style="font-size:25px;cursor:pointer" onclick="openNav()">&#9776; Administratoriaus panelė</span>
+                </h4>
+                <hr class="adminHr" /><br />
+                <h5 class="sukurimoText">Žaidėjo sukūrimas</h5>
+                <form method="post">
+                    <div asp-validation-summary="All" class="text-danger"></div>
+                    <div class="form-group">
+                        <label class="labelText" for="inputName">Vardas</label>
+                        <input type="text" class="form-control" id="inputName" asp-for="vardas" placeholder="Iveskite varda">
+                    </div>
+                    <div class="form-group">
+                        <label class="labelText" for="exampleFormControlSelect1">Komanda</label>
+                        <select asp-for="@Model.komandaId" class="form-control">
+                            <option selected disabled>-- Pasirinkite Komanda --</option>
+                            @foreach (var item in Model.displayData)
+                            {
+                                <option value="@item.ID">@item.Pavadinimas</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="labelText" for="inputPicture">Nuotraukos nuoroda</label>
+                        <input type="url" class="form-control" id="inputPicture" asp-for="fotoURL" placeholder="Iveskite nuotraukos nuorodą">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="labelText" for="exampleFormControlSelect1">Pozicija</label>
+                        <select asp-for="pozicija" class="form-control">
+                            <option selected disabled>-- Pasirinkite pozicija --</option>
+                            <option>Guard</option>
+                            <option>Forward</option>
+                            <option>Center</option>
+                        </select>
+                    </div>
+
+                    <input id="sukurimoButton" type="submit" value="Sukurti" class="btn float-right create-btn">
+                </form>
+            </div>
+            <div class="col-lg">
+                <img src="/img/basketball-player.png" class="img-fluid adminPanelImg" alt="Responsive image">
+            </div>
+        </div>
+    </div>
+</div>
+

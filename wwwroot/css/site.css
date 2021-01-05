@@ -1,0 +1,291 @@
+﻿@import url('https://fonts.googleapis.com/css?family=Numans');
+
+html, body {
+    font-family: 'Numans', sans-serif;
+    background-color: #F2F2F2;
+}
+
+.homePage{
+    max-width:none;
+}
+.container{
+    max-width:none;
+}
+#loginButton {
+    color: #00adb5;
+    padding: 32px;
+    border-radius: 0px;
+    border: none;
+}
+#logOut {
+    color: #00adb5;
+    padding: 32px;
+    border-radius: 0px;
+    border: none;
+    margin-right:-15px;
+}
+#logOut:hover {
+    background: #00adb5;
+    color: white;
+}
+#loginButton:hover {
+    background: #00adb5;
+    color: white;
+}
+#registerButton {
+    color:#00adb5;
+    padding: 32px;
+    border-radius: 0px;
+    border: none;
+    margin-right: -15px;
+}
+#registerButton:hover {
+        background: #00adb5;
+        color: white;
+}
+#main {
+    transition: margin-left .5s;
+    padding: 16px;
+    width:100%;
+}
+h3{
+    text-align:center!important;
+}
+h1{
+    margin:auto!important;
+    text-align:center;
+    padding-top:40px;
+    padding-bottom:40px;
+}
+.col-md-auto{
+    margin:auto;
+}
+
+.rungtynes{
+    width:85%;
+    margin:auto;
+    border-radius:5px;
+    background-color:white;
+}
+.matchDate{
+    margin:auto;
+    text-align:center;
+    font-weight:bold;
+    margin-top:10%;
+}
+.match{
+    border-right:2px solid black;
+}
+.bestPlayer{
+    border-right:2px solid black;
+}
+.rezButton {
+    margin-left: 20px !important;
+    padding: 32px;
+    text-decoration: none;
+    color: #00adb5;
+}
+.rezButton:hover {
+    color: white;
+    background: #00adb5;
+    text-decoration: none;
+}
+.joinButton {
+    margin-left: 20px !important;
+    padding: 32px;
+    text-decoration: none;
+    color: #00adb5;
+}
+.joinButton:hover {
+    color: white;
+    background:#00adb5;
+    text-decoration:none;
+}
+.nav-link {
+    padding-left: 15px!important;
+    padding-right: 15px!important;
+    font-size:18px;
+}
+.teamName{
+    font-weight:900;
+    margin-top:10px;
+    font-size:25px;
+}
+.bestPlayerTittle{
+    margin-top:10px;
+    font-size:25px;
+}
+.table thead th{
+    border-top:none;
+    border-bottom:2px solid black;
+}
+.table td, .table th{
+    vertical-align:baseline;
+    border-top:none;
+
+}
+td{
+    text-align:center;
+}
+#firstMatchColumn{
+    margin-top:7%;
+}
+.userName {
+    color:white;
+    font-size:20px;
+    padding-right:20px;
+    margin-top:6px;
+}
+.pb-3 {
+    padding: 0;
+    margin: 0;
+}
+
+.pb-3, .py-3 {
+    padding-bottom: 0 !important;
+}
+
+footer {
+    position: absolute;
+    width: 100%;
+    height: 2.5rem; /* Footer height */
+}
+.bg-dark{
+    background-color:#212121!important;
+}
+.indexButton{
+    margin-top:20px;
+    background-color:#212121;
+    color:white;
+}
+.matchFilterButton{
+    margin:auto;
+    text-align:center;
+}
+.bg-dark{
+    height:100px!important;
+}
+.matchDate p {
+    font-size: 17px;
+}
+.card{
+    margin-top:20px;
+    margin-bottom:20px;
+}
+.bg-success {
+    background-color:#2eb82e!important;
+    color:white!important;
+    font-size:17px!important;
+}
+
+@media only screen and (max-width: 1501px) {
+    .teamName{
+        font-size:20px;
+    }
+}
+
+@media only screen and (max-width: 1401px) {
+    .joinButton{
+        margin-left:10px!important;
+        padding:20px;
+    }
+    .rezButton {
+        margin-left: 10px !important;
+        padding: 20px;
+    }
+    .firstTr th {
+        display: grid !important;
+    }
+
+    .secondTr th {
+        display: grid !important;
+    }
+    .playerTable{
+        table-layout:auto!important;
+    }
+}
+
+@media only screen and (max-width: 1200px) {
+    .match{
+        border-right:none;
+    }
+    .bestPlayer {
+        border-right: none;
+    }
+    .buttonPanel{
+        text-align:center;
+        margin-top:20px!important;
+        margin-bottom:20px!important;
+    }
+    .joinButton {
+        padding: 15px;
+        background-color: #00adb5;
+        color:white;
+    }
+    .joinButton:hover {
+        padding: 15px;
+        background-color: #00adb5;
+        color: white;
+    }
+    .rezButton {
+        padding: 15px;
+        background-color: #00adb5;
+        color: white;
+    }
+    .rezButton:hover {
+        padding: 15px;
+        background-color: #00adb5;
+        color: white;
+     }
+}
+
+@media only screen and (max-width: 992px) {
+    .bg-dark {
+        height: auto !important;
+    }
+    #registerButton{
+        padding:15px;
+    }
+    #loginButton {
+        padding: 15px;
+        margin-bottom:10px;
+    }
+    #logOut {
+        padding: 15px;
+    }
+}
+@media only screen and (max-width: 768px) {
+    .firstTr th{
+        display:grid!important;
+    }
+    .secondTr th {
+        display: grid !important;
+    }
+}
+@media only screen and (max-width: 501px) {
+    .indexTeamLogo {
+        width: 100% !important;
+    }
+}
+p{
+    font-weight:700;
+    font-size:20px;
+}
+.kaipZaistiPsl{
+    width:75%;
+    margin:auto;
+    text-align:center;
+}
+.tutorialImg{
+    width:70%;
+    border:2px solid #212121;
+    box-shadow: 5px 10px #212121;
+    margin-bottom:50px;
+    margin-top:30px;
+}
+.tutorialHr{
+    border-top:2px solid #212121;
+    width:50%;
+    margin-top:-15px;
+    margin-bottom:40px;
+}

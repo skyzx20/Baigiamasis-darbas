@@ -1,0 +1,70 @@
+﻿@model IEnumerable<fantazijos_lyga.Duomenu_baze.Rungtynes>
+<h4 style="margin-top:20px; text-align:center;" class="sukurimoText">Administratoriaus panelė</h4>
+<hr style="width:30%;" class="adminHr" />
+<br />
+<h5 style="margin-top:-20px; margin-bottom:40px; text-align:center;" class="sukurimoText">Rungtynės</h5>
+<table id="table" data-toggle="table" data-search="true">
+    <thead>
+        <tr style="text-align:center;">
+            <th data-field="Vardas" data-width="10" data-width-unit="%">
+                Namų komanda
+            </th>
+            <th data-width="18" data-width-unit="%">
+                Namų komandos rezultatas
+            </th>
+            <th data-width="18" data-width-unit="%">
+                Išvykos komanda
+            </th>
+            <th data-width="18" data-width-unit="%">
+                Išvykos komandos rezultatas
+            </th>
+            <th data-width="18" data-width-unit="%">
+                Rungtynių data
+            </th>
+            <th data-width="10" data-width-unit="%">
+                Veiksmai
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Count() != 0)
+        {
+            @foreach (var match in Model)
+            {
+                <tr>
+                    <td>
+                        @match.HomeTeam?.Pavadinimas
+                    </td>
+                    <td>
+                        @match.HomeTeamScore
+                    </td>
+                    <td>
+                        @match.AwayTeam?.Pavadinimas
+                    </td>
+                    <td>
+                        @match.AwayTeamScore
+                    </td>
+                    <td>
+                        @match.StartDate
+                    </td>
+
+                    <td text-right">
+                        <a style="margin-bottom:10px;" onclick="jQueryModalGet('?handler=CreateOrEdit&id=@match.ID', 'Redaguoti rungtynes')" class="btn btn-info text-white"> Redaguoti</a>
+                        <form method="post" asp-page="APMatch" asp-route-id="@match.ID" asp-page-handler="Delete" onsubmit="return jQueryModalDelete(this)" class="d-inline">
+                            <button type="submit" class="btn btn-danger text-white"> Ištrinti</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+        </div>
+<script>
+    var $table = $('#table');
+
+    $table.bootstrapTable();
+    $(document).ready(function () {
+        $('.fixed-table-toolbar .search input').attr("placeholder", "Paieška");
+    });
+</script>

@@ -1,0 +1,62 @@
+﻿@model IEnumerable<fantazijos_lyga.Duomenu_baze.Komanda>
+<h4 style="margin-top:20px; text-align:center;" class="sukurimoText">Administratoriaus panelė</h4>
+<hr style="width:30%;" class="adminHr" />
+<br />
+<h5 style="margin-top:-20px; margin-bottom:40px; text-align:center;" class="sukurimoText">Komandos</h5>
+<table class="table table-bordered" id="table" data-search="true" style="text-align:center;">
+    <thead>
+        <tr style="text-align:center;">
+            <th>
+                Pavadinimas
+            </th>
+            <th>
+                Sutrumpinimas
+            </th>
+            <th>
+                Logo
+            </th>
+            <th>
+                Regionas
+            </th>
+            <th>
+                Veiksmai
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Count() != 0)
+        {
+            @foreach (var team in Model)
+            {
+                <tr>
+                    <th>
+                        @team.Pavadinimas
+                    </th>
+                    <th>
+                        @team.ShortName
+                    </th>
+                    <th>
+                        <img src="@team.Logo" width="100px" />
+                    </th>
+                    <th>
+                        @team.Region
+                    </th>
+                    <td text-right">
+                        <a onclick="jQueryModalGet('?handler=CreateOrEdit&id=@team.ID', 'Redaguoti komandą')" class="btn btn-info text-white"> Redaguoti</a>
+                        <form method="post" asp-page="APTeams" asp-route-id="@team.ID" asp-page-handler="Delete" onsubmit="return jQueryModalDelete(this)" class="d-inline">
+                            <button type="submit" class="btn btn-danger text-white"> Trinti</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+<script>
+    var $table = $('#table');
+
+    $table.bootstrapTable();
+    $(document).ready(function () {
+        $('.fixed-table-toolbar .search input').attr("placeholder", "Paieška");
+    });
+</script>

@@ -1,0 +1,63 @@
+﻿@page
+@model fantazijos_lyga.Pages.AdminPanelModel
+@{
+}
+@section Styles{
+    <link rel="stylesheet" href="/css/adminPanel.css" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+}
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<div id="main">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg">
+                <h4 style="margin-top:20px;" class="sukurimoText">Administratoriaus panelė</h4>
+                <hr style="width:30%;" class="adminHr" /><br />
+                <h5 style="margin-top:-20px; margin-bottom:40px;" class="sukurimoText">Galimi veiksmai</h5>
+                @if (Model.displayData != null)
+                {
+            <div class="card-group" style="width:90%;">
+                <div class="card" style="width: 18rem;">
+                    <img class="card-img-top" src="/img/004-basketball court.png" alt="Card image cap">
+                    <div class="card-body">
+                        <hr />
+                        <a class="btn btn-default adminPanelButton" href="/APMatch">Rungtynių sukūrimas</a>
+                    </div>
+                </div>
+                <div class="card" style="width: 18rem;">
+                    <img class="card-img-top" src="/img/basketball-player.png" alt="Card image cap">
+                    <div class="card-body">
+                        <hr />
+                        <a class="btn btn-default adminPanelButton" href="/APPlayers">Žaidėjo sukūrimas</a>
+                    </div>
+                </div>
+                <div class="card" style="width: 18rem;">
+                    <img class="card-img-top" src="/img/stats.png" alt="Card image cap">
+                    <div class="card-body">
+                        <hr />
+                        <a class="btn btn-default adminPanelButton" href="/AddStatistics">Statistikos sukūrimas</a>
+                    </div>
+                </div>
+                <div class="card" style="width: 18rem;">
+                    <img class="card-img-top" src="/img/basketball-court.png" alt="Card image cap">
+                    <div class="card-body">
+                        <hr />
+                        <a class="btn btn-default adminPanelButton" href="/APTeams">Komandos sukūrimas</a>
+                    </div>
+                </div>
+            </div>
+                }
+        </div>
+    </div>
+  </div>
+</div>
+    <script>
+        function openNav() {
+            document.getElementById("mySidenav").style.width = "300px";
+        }
+
+        function closeNav() {
+            document.getElementById("mySidenav").style.width = "0";
+        }
+    </script>

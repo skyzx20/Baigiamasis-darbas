@@ -1,0 +1,32 @@
+﻿@page
+@model fantazijos_lyga.Pages.APMatchModel
+@{
+    ViewData["PageHeading"] = "Rungtynės";
+}
+@section Styles{
+       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.2/dist/jquery.validate.js" />
+}
+
+<div class="card">
+    <div class="col-sm-12" style="padding:20px">
+        <a onclick="jQueryModalGet('?handler=CreateOrEdit','Sukurti rungtynes')" class="btn bg-success">
+            Sukurti rungtynes
+        </a>
+    </div>
+    <div id="viewAll"></div>
+</div>
+
+@section Scripts {
+    <script src="https://unpkg.com/bootstrap-table@1.18.1/dist/bootstrap-table.min.js"></script>
+    <script>
+
+        $(document).ready(function () {
+            $('#viewAll').load('?handler=ViewAllPartial');
+        });
+        $(function () {
+            $('#reload').on('click', function () {
+                $('#viewAll').load('?handler=ViewAllPartial');
+            });
+        });
+    </script>
+}

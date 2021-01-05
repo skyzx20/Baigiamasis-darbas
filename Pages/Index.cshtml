@@ -1,0 +1,234 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Pradinis";
+    int indexHolder = 0;
+}
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="/js/admin.js"></script>
+<script src="/js/countdown.js"></script>
+<script src="/js/startedGames.js"></script>
+<script src="~/js/finishedGame.js"></script>
+
+<div class="matchFilterButton">
+   <button type="button" class="btn btn-secondary indexButton" onclick="openCity('London');removeFinnishedGames()">Nepasibaigusios rungtynės</button>
+   <button type="button" class="btn btn-secondary indexButton" onclick="openCity('Paris');removeNotStartedGames()">Pasibaigusios rungtynės</button>
+</div>
+<div id="London" class="w3-container city">
+    <div class="homePage">
+        <div class="row">
+            <div id="main">
+                <h1>Nepasibaigusios rungtynės</h1>
+               @if( Model.rungtynes.Count ==0)
+                {
+                <h3>Rungtynės nevyksta</h3>
+                }
+                @foreach (var item in Model.rungtynes)
+                {
+                    if (item.StartDate > DateTime.Now)
+                    {
+                        <div class="rungtynes">
+                            <div class="row">
+                                <div class="col-xl-5 match">
+                                    <div id="firstMatchColumn" class="row justify-content-md-center">
+                                        <div class="col-md-4 homeTeam" style="margin-top:20px;">
+                                            <img src="@item.AwayTeam.Logo" width="70px" class="rounded mx-auto d-block" alt="">
+                                            <h3 class="teamName">@item.AwayTeam.Pavadinimas</h3><br />
+                                        </div>
+                                        <div class="col-md-4 matchDate">
+                                            <p class="rungtyniuStartText">Iki rungtynių liko:</p>
+                                            @{
+                                                indexHolder++;
+                                            }
+                                            <p id="countDown-@indexHolder">
+                                                <script>countDown('@item.StartDate', 'countDown-@indexHolder', 'disableButton-@indexHolder', @indexHolder)</script>
+                                            </p>
+                                        </div>
+                                        <div class="col-md-4 awayTeam" style="margin-top:20px;">
+                                            <img src="@item.HomeTeam.Logo" width="70px" class="rounded mx-auto d-block" alt="">
+                                            <h3 class="teamName">@item.HomeTeam.Pavadinimas</h3><br />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-5 bestPlayer">
+                                    <h3 class="bestPlayerTittle">Geriausi žaidėjai</h3>
+                                    <div class="table-responsive-xl">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">Žaidėjas</th>
+                                                    <th scope="col"></th>
+                                                    <th scope="col">PPG</th>
+                                                    <th scope="col">RPG</th>
+                                                    <th scope="col">APG</th>
+                                                    <th scope="col">BLK</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr class="firstTr">
+                                                    <th scope="row"><img src="@item.HomeTeam.Zaidejai[0].FotoPath" width="60px" height="60px" class="img-fluid" alt="Responsive image">@item.HomeTeam.Zaidejai[0].Vardas</th>
+                                                    <td><img src="@item.HomeTeam.Logo" width="45px" class="img-fluid indexTeamLogo" alt="Responsive image"></td>
+                                                    <td>@((Convert.ToDouble(item.HomeTeam.Zaidejai[0].TotalPoints) / Convert.ToDouble(item.HomeTeam.Zaidejai[0].GamesPlayer)).ToString("0.0"))</td>
+                                                    <td>@((Convert.ToDouble(item.HomeTeam.Zaidejai[0].TotalRebounds) / Convert.ToDouble(item.HomeTeam.Zaidejai[0].GamesPlayer)).ToString("0.0"))</td>
+                                                    <td>@((Convert.ToDouble(item.HomeTeam.Zaidejai[0].TotalAssist) / Convert.ToDouble(item.HomeTeam.Zaidejai[0].GamesPlayer)).ToString("0.0"))</td>
+                                                    <td>@((Convert.ToDouble(item.HomeTeam.Zaidejai[0].TotalBlocks) / Convert.ToDouble(item.HomeTeam.Zaidejai[0].GamesPlayer)).ToString("0.0"))</td>
+                                                </tr>
+                                                <tr class="secondTr">
+                                                    <th scope="row"><img src="@item.AwayTeam.Zaidejai[0].FotoPath" width="60px" height="60px" class="img-fluid" alt="Responsive image">@item.AwayTeam.Zaidejai[0].Vardas</th>
+                                                    <td><img src="@item.AwayTeam.Logo" width="45px" class="img-fluid indexTeamLogo" alt="Responsive image"></td>
+                                                    <td>@((Convert.ToDouble(item.AwayTeam.Zaidejai[0].TotalPoints) / Convert.ToDouble(item.AwayTeam.Zaidejai[0].GamesPlayer)).ToString("0.0"))</td>
+                                                    <td>@((Convert.ToDouble(item.AwayTeam.Zaidejai[0].TotalRebounds) / Convert.ToDouble(item.AwayTeam.Zaidejai[0].GamesPlayer)).ToString("0.0"))</td>
+                                                    <td>@((Convert.ToDouble(item.AwayTeam.Zaidejai[0].TotalAssist) / Convert.ToDouble(item.AwayTeam.Zaidejai[0].GamesPlayer)).ToString("0.0"))</td>
+                                                    <td>@((Convert.ToDouble(item.AwayTeam.Zaidejai[0].TotalBlocks) / Convert.ToDouble(item.AwayTeam.Zaidejai[0].GamesPlayer)).ToString("0.0"))</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="col-xl-2 buttonPanel" style="margin:auto;">
+                                    @if (User.IsInRole("1") || User.IsInRole("2") == true)
+                                    {
+                                        if (item.RungtyniuStatistikos.Count == 0)
+                                        {
+                                            <a id="disableButton-@indexHolder" class="joinButton" asp-page="/matchPage" asp-route-RungtyniuID="@item.ID">Dalyvauti</a>
+                                        }
+                                        else
+                                        {
+                                            <a id="disableButton-@indexHolder" class="rezButton" asp-page="/WinnerPage" asp-route-RungtyniuID="@item.ID">Rezultatai</a>
+                                        }
+
+                                    }
+                                    else
+                                    {
+                                        <h5 style="margin:auto;text-align:center;margin-bottom:50px; margin-left:-16px;">Norint dalyvauti reikia:</h5>
+                                        <a class="joinButton" asp-page="/login">Prisijungti</a>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        <div class="empty" style="margin-top:20px;margin-bottom"></div>
+                    }
+                }
+            </div>
+
+            @section Scripts
+             {
+                <script src="https://unpkg.com/bootstrap-table@1.18.1/dist/bootstrap-table.min.js"></script>
+                <script>
+                    function openCity(cityName) {
+                        var i;
+                        var x = document.getElementsByClassName("city");
+                        for (i = 0; i < x.length; i++) {
+                            x[i].style.display = "none";
+                        }
+                        document.getElementById(cityName).style.display = "block";
+                    }
+                </script>
+            }
+        </div>
+    </div>
+</div>
+
+<div id="Paris" class="w3-container city" style="display:none">
+    <h1>Pasibaigusios rungtynės</h1>
+    @if (Model.rungtynes.Count == 0)
+    {
+        <h3>Rungtynės nevyksta</h3>
+    }
+    @foreach (var item in Model.rungtynes)
+    {
+        if (item.StartDate <= DateTime.Now)
+        {
+            <div class="rungtynes">
+                <div class="row">
+                    <div class="col-xl-5 match">
+                        <div id="firstMatchColumn" class="row justify-content-md-center">
+                            <div class="col-md-4 homeTeam" style="margin-top:20px;">
+                                <img src="@item.AwayTeam.Logo" width="70px" class="rounded mx-auto d-block" alt="">
+                                <h3 class="teamName">@item.AwayTeam.Pavadinimas</h3><br />
+                            </div>
+                            <div class="col-md-4 matchDate">
+                                @if (item.StartDate > DateTime.Now)
+                                {
+                                    <p class="rungtyniuStartText">Iki rungtynių liko:</p>
+                                }
+                                @{
+                                    indexHolder++;
+                                }
+                                <p id="countDown-@indexHolder">
+                                    <script>countDown('@item.StartDate', 'countDown-@indexHolder', 'disableButton-@indexHolder', @indexHolder)</script>
+                                </p>
+                            </div>
+                            <div class="col-md-4 awayTeam" style="margin-top:20px;">
+                                <img src="@item.HomeTeam.Logo" width="70px" class="rounded mx-auto d-block" alt="">
+                                <h3 class="teamName">@item.HomeTeam.Pavadinimas</h3><br />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-5 bestPlayer">
+                        <h3 class="bestPlayerTittle">Geriausi žaidėjai</h3>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Žaidėjas</th>
+                                    <th scope="col"></th>
+                                    <th scope="col">PPG</th>
+                                    <th scope="col">RPG</th>
+                                    <th scope="col">APG</th>
+                                    <th scope="col">BLK</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                <tr>
+                                    <th scope="row"><img src="@item.HomeTeam.Zaidejai[0].FotoPath" width="60px" height="60px" class="img-fluid" alt="Responsive image">@item.HomeTeam.Zaidejai[0].Vardas</th>
+                                    <td><img src="@item.HomeTeam.Logo" width="45px" class="img-fluid" alt="Responsive image"></td>
+                                    <td>@((Convert.ToDouble(item.HomeTeam.Zaidejai[0].TotalPoints) / Convert.ToDouble(item.HomeTeam.Zaidejai[0].GamesPlayer)).ToString("0.0"))</td>
+                                    <td>@((Convert.ToDouble(item.HomeTeam.Zaidejai[0].TotalRebounds) / Convert.ToDouble(item.HomeTeam.Zaidejai[0].GamesPlayer)).ToString("0.0"))</td>
+                                    <td>@((Convert.ToDouble(item.HomeTeam.Zaidejai[0].TotalAssist) / Convert.ToDouble(item.HomeTeam.Zaidejai[0].GamesPlayer)).ToString("0.0"))</td>
+                                    <td>@((Convert.ToDouble(item.HomeTeam.Zaidejai[0].TotalBlocks) / Convert.ToDouble(item.HomeTeam.Zaidejai[0].GamesPlayer)).ToString("0.0"))</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row"><img src="@item.AwayTeam.Zaidejai[0].FotoPath" width="60px" height="60px" class="img-fluid" alt="Responsive image">@item.AwayTeam.Zaidejai[0].Vardas</th>
+                                    <td><img src="@item.AwayTeam.Logo" width="45px" class="img-fluid" alt="Responsive image"></td>
+                                    <td>@((Convert.ToDouble(item.AwayTeam.Zaidejai[0].TotalPoints) / Convert.ToDouble(item.AwayTeam.Zaidejai[0].GamesPlayer)).ToString("0.0"))</td>
+                                    <td>@((Convert.ToDouble(item.AwayTeam.Zaidejai[0].TotalRebounds) / Convert.ToDouble(item.AwayTeam.Zaidejai[0].GamesPlayer)).ToString("0.0"))</td>
+                                    <td>@((Convert.ToDouble(item.AwayTeam.Zaidejai[0].TotalAssist) / Convert.ToDouble(item.AwayTeam.Zaidejai[0].GamesPlayer)).ToString("0.0"))</td>
+                                    <td>@((Convert.ToDouble(item.AwayTeam.Zaidejai[0].TotalBlocks) / Convert.ToDouble(item.AwayTeam.Zaidejai[0].GamesPlayer)).ToString("0.0"))</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-xl-2 buttonPanel" style="margin:auto;">
+                        @if (User.IsInRole("1") || User.IsInRole("2") == true)
+                        {
+                            if (item.RungtyniuStatistikos.Count == 0)
+                            {
+                                <a id="disableButton-@indexHolder" class="joinButton" asp-page="/matchPage" asp-route-RungtyniuID="@item.ID">Dalyvauti</a>
+                            }
+                            else
+                            {
+                                <a id="disableButton-@indexHolder" class="rezButton" asp-page="/WinnerPage" asp-route-RungtyniuID="@item.ID">Rezultatai</a>
+                            }
+
+                        }
+                        else
+                        {
+                            if (item.RungtyniuStatistikos.Count == 0)
+                            {
+                                <h5 style="margin:auto;text-align:center;margin-bottom:50px; margin-left:-16px;">Norint dalyvauti reikia:</h5>
+                                <a class="joinButton" asp-page="/login">Prisijungti</a>
+                            }
+                            else
+                            {
+                                <a id="disableButton-@indexHolder" class="rezButton" asp-page="/WinnerPage" asp-route-RungtyniuID="@item.ID">Rezultatai</a>
+                            }
+
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="empty" style="margin-top:20px;margin-bottom"></div>
+        }
+    }
+</div>
